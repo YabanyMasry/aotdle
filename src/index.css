@@ -1,0 +1,422 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Hardware Color Palette */
+  --bg: #0a0a0a; /* Darkest void */
+  --panel: #111111; /* Dark grey chassis */
+  --panel-border: #050505; /* Black panel seams */
+  --accent: #38bdf8; /* LCD Blue */
+  --accent-2: #0284c7; 
+  --text: #e0e0e0;
+  --muted: #666666;
+  --success: #4ade80; /* LED Green */
+  --danger: #ef4444;  /* LED Red */
+  --warn: #facc15;    /* LED Amber */
+  
+  /* Flat, brutal background instead of soft glowing gradients */
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  /* System font replaced with a mechanical/monospace feel */
+  font-family: 'Doto', 'Courier New', Courier, monospace; 
+  background: transparent;
+  color: var(--text);
+}
+
+.page-shell {
+  display: flex;
+  justify-content: center;
+  padding: 48px 16px 80px;
+}
+
+/* 1. The Main Chassis (Replaces the blurred glass board) */
+.board {
+  width: min(1100px, 100%);
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  /* Raised physical box */
+  box-shadow: 
+    inset 1px 1px 2px rgba(255, 255, 255, 0.05),
+    0 20px 50px rgba(0, 0, 0, 0.8);
+  border-radius: 4px; /* Sharp, industrial corners */
+  padding: 28px 24px 32px;
+}
+
+.title {
+  font-size: clamp(32px, 4vw, 42px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Title Badge looks like a screen-printed warning label or LED indicator */
+.title-badge {
+  padding: 4px 8px;
+  border-radius: 2px;
+  background: var(--accent);
+  color: #000;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 900;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.5), 0 0 8px rgba(56, 189, 248, 0.4);
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-top: 4px;
+  margin-bottom: 24px;
+  font-family: 'Courier New', Courier, monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.85rem;
+}
+
+/* Streak card looks like a recessed LCD readout */
+.streak-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 2px;
+  border: 1px solid #000;
+  background: #050505; /* Deep black screen */
+  color: var(--accent); /* Glowing text */
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 800;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+.search-card {
+  margin-top: 16px;
+  position: relative;
+}
+
+/* Deep Recessed Terminal Input */
+.search-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 2px;
+  border: 1px solid #1a1a1a;
+  border-top: 2px solid #000; /* Adds depth */
+  background: #050505;
+  color: var(--accent);
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  letter-spacing: 1px;
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.9);
+  transition: all 0.1s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.9), 0 0 0 1px var(--accent);
+}
+
+/* Dropdown Menu - Physical Panel Plate */
+.search-suggestions {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  margin-top: 6px;
+  max-height: 240px;
+  overflow-y: auto;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 2px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+.search-item {
+  padding: 12px 14px;
+  cursor: pointer;
+  color: var(--text);
+  border-bottom: 1px solid #050505;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.search-item:last-child {
+  border-bottom: none;
+}
+
+/* Hovering feels like moving a hardware selector */
+.search-item:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+.search-thumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 2px;
+  object-fit: cover;
+  border: 1px solid #000;
+  background: #000;
+}
+
+.search-name {
+  font-weight: 800;
+}
+
+.guesses-grid {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 12px;
+}
+
+/* Guess Row - Raised Physical Cartridge/Module */
+.guess-row {
+  display: inline-flex;
+  gap: 12px;
+  padding: 12px;
+  background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+  border: 1px solid #050505;
+  border-radius: 4px;
+  box-shadow: 
+    3px 3px 5px rgba(0, 0, 0, 0.6),
+    inset 1px 1px 1px rgba(255, 255, 255, 0.05);
+  align-items: stretch;
+}
+
+/* Avatar block */
+.guess-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  width: 120px;
+  min-height: 120px;
+  border-radius: 2px;
+  border: 1px solid #050505;
+  background: #111;
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.guess-avatar img {
+  width: 72px;
+  height: 72px;
+  border-radius: 2px;
+  object-fit: cover;
+  border: 1px solid #000;
+}
+
+.guess-name {
+  font-weight: 800;
+  text-align: center;
+  color: #fff;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  line-height: 1.2;
+}
+
+/* Recessed LCD Data Cells */
+.cell {
+  width: 120px;
+  min-height: 120px;
+  border-radius: 2px;
+  padding: 10px;
+  text-align: center;
+  background: #000; /* Pure black screen */
+  border: 1px solid #1a1a1a;
+  border-top: 2px solid #000; /* Deep inset */
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+  font-family: 'Courier New', Courier, monospace;
+  text-transform: uppercase;
+}
+
+.cell-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #555;
+  font-weight: 800;
+}
+
+.cell-value {
+  font-size: 14px;
+  font-weight: 900;
+  color: #fff;
+  word-break: break-word;
+  line-height: 1.2;
+}
+
+/* LED Indicator States for Cells */
+.cell.correct {
+  border-color: #000;
+  color: var(--success);
+}
+.cell.correct .cell-value { color: var(--success); text-shadow: 0 0 5px rgba(74, 222, 128, 0.5); }
+.cell.correct .cell-label { color: #228f41; }
+
+.cell.incorrect {
+  border-color: #000;
+  color: var(--danger);
+}
+.cell.incorrect .cell-value { color: var(--danger); text-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+.cell.incorrect .cell-label { color: #991b1b; }
+
+.cell.partial {
+  border-color: #000;
+  color: var(--warn);
+}
+.cell.partial .cell-value { color: var(--warn); text-shadow: 0 0 5px rgba(250, 204, 21, 0.5); }
+.cell.partial .cell-label { color: #854d0e; }
+
+/* Arrows inside the LCD */
+.cell-hint {
+  font-size: 12px;
+  font-weight: 900;
+  padding: 2px 6px;
+  display: inline-block;
+  background: transparent;
+}
+.cell-hint.higher { color: var(--accent); }
+.cell-hint.lower { color: var(--danger); }
+
+/* Hardware Notice Plate */
+.notice {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 2px;
+  border: 1px solid var(--success);
+  background: #050505;
+  color: var(--success);
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: inset 0 0 10px rgba(74, 222, 128, 0.1);
+}
+
+/* The Remote / Secondary Hardware Module */
+.floating-date-card {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  width: 260px;
+  background: linear-gradient(145deg, #1f1f1f, #0a0a0a); /* Chunky plastic */
+  border: 1px solid #000;
+  border-radius: 4px;
+  box-shadow: 
+    inset 1px 1px 1px rgba(255,255,255,0.05),
+    5px 10px 25px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  z-index: 30;
+}
+
+.floating-date-header {
+  padding: 10px 14px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 12px;
+  background: #050505;
+  border-bottom: 2px solid #111;
+  color: #888;
+}
+
+.floating-date-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.floating-date-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #666;
+  font-weight: 800;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Recessed LCD inside the remote */
+.floating-date-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 2px;
+  border: 1px solid #111;
+  border-top: 2px solid #000;
+  background: #000;
+  color: var(--accent);
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.9);
+}
+
+.floating-date-input:focus {
+  outline: none;
+  border-color: #333;
+}
+
+.floating-date-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+/* Convex Mechanical Switches */
+.floating-date-buttons button {
+  padding: 10px 6px;
+  border-radius: 2px;
+  background: linear-gradient(145deg, #2a2a2a, #111);
+  border: 1px solid #050505;
+  box-shadow:
+    2px 2px 4px rgba(0,0,0,0.8),
+    inset 1px 1px 1px rgba(255,255,255,0.05);
+  color: #888;
+  cursor: pointer;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 900;
+  font-size: 12px;
+  text-transform: uppercase;
+  transition: all 0.05s ease;
+}
+
+.floating-date-buttons button:hover {
+  color: #ccc;
+  background: linear-gradient(145deg, #333, #1a1a1a);
+}
+
+/* Physically sinks when pushed */
+.floating-date-buttons button:active {
+  background: #111;
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.9);
+  transform: translateY(1px);
+  color: var(--accent);
+}
