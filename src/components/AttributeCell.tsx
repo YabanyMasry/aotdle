@@ -3,12 +3,14 @@ import React from 'react';
 interface AttributeCellProps {
   label: string;
   value: string;
+  targetValue: string;
+  isMatch: boolean;
   status: 'correct' | 'incorrect' | 'partial';
   direction?: 'higher' | 'lower';
   // ... other props if higher/lower needed ...
 }
 
-export const AttributeCell: React.FC<AttributeCellProps> = ({ label, value, status, direction }) => {
+export const AttributeCell: React.FC<AttributeCellProps> = ({ label, value, targetValue, status, direction }) => {
   const getStatusColor = () => {
     switch (status) {
       case 'correct': return 'correct';

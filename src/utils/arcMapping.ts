@@ -24,14 +24,19 @@ const chapterToArc: Record<string, string> = {
   "Still Can't See": "Uprising",
   "The Other Side of the Ocean": "Marley",
   "A Dream I Once Had": "War for Paradis",
+  "Where's the Left Arm?": "Trost District",
+  "Long-Distance Enemy Scouting Formation": "Female Titan",
+  "Icon": "Fall of Shiganshina",
   "Brave Volunteers": "Marley",
   "Mission Objectives": "Marley",
   "Soldiers Dance": "War for Paradis",
   "Delusions of Strength": "War for Paradis",
   "Actors": "Uprising",
   "Wound": "Uprising",
+  "Special Operations Squad": "Female Titan",
+  "Smoke Signal": "Return to Shiganshina",
   "Response": "Trost District",
-  "Icon": "Fall of Shiganshina",
+  "Erwin Smith": "Clash of the Titans",
 };
 
 // Ordered list of chapters for directional comparison; earlier index = earlier in story.
